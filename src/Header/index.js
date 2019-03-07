@@ -1,13 +1,13 @@
 import React from 'react';
 import Symbol from './../Symbol';
 
-const Alphabet = ({ letters }) => (
+const Alphabet = ({ letters, typedSymbol }) => (
   <ul>
     {letters.map(letter => (
       <li key={letter} className="letter-pair">
         <span className="letter">{letter}</span>
         <span className="converted">
-          <Symbol letter={letter} />
+          <Symbol letter={letter} typedSymbol={typedSymbol} />
         </span>
       </li>
     ))}
@@ -43,10 +43,10 @@ const letters = [
   'z'
 ];
 
-const Header = () => (
+const Header = ({ typedSymbol }) => (
   <div>
     Show help
-    <Alphabet letters={letters} />
+    <Alphabet letters={letters} typedSymbol={typedSymbol} />
   </div>
 );
 export default Header;

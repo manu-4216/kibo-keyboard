@@ -30,9 +30,17 @@ ul {
 
 table {
   border-collapse: collapse;
-  /* border-style: solid;
-  border-color: black;
-  border-width: 0 0 1px 1px; */
+  margin: auto;
+}
+.typed-letter {
+  background: black;
+}
+.typed-letter td {
+  border-color: #e16868;
+}
+
+.typed-letter .cell-filled {
+  background: #e2b6b6;
 }
 td {
   border: 1px solid #a0a0a0;
@@ -49,6 +57,10 @@ tr {
 
 .cell-filled {
   background: white;
+}
+
+.cell-touched {
+  background: #e2b6b6;
 }
 
 .keyboard {

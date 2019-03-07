@@ -37,18 +37,34 @@ const mapedLetterToEncoding = {
   z: '101011'
 };
 
-const Cell = ({ index, letter = ' ', size = '5', handleDragEnter }) => {
+const Cell = ({
+  index,
+  letter = ' ',
+  size = '5',
+  handleDragEnter,
+  touched
+}) => {
   const isFilled = mapedLetterToEncoding[letter][+index] === '1';
   const cellStyle = {
     height: `${size}px`,
     width: `${size}px`
   };
+
+  let className = '';
+
+  if (isFilled) {
+    className += ' cell-filled';
+  }
+
+  if (touched) {
+    className += ' cell-touched';
+  }
   return (
     <td
       onMouseEnter={handleDragEnter}
       data-index={index}
       style={cellStyle}
-      className={isFilled ? 'cell-filled' : ''}
+      className={className}
     />
   );
 };
@@ -62,34 +78,41 @@ class Symbol extends Component {
     const index = event.target.dataset.index;
 
     this.setState({ touching: true, sequence: [index] });
-    // console.log('Start ', index);
+    console.log('Start ', index);
+  };
+
+  handleDoubleClick = event => {
+    const index = event.target.dataset.index;
+
+    // this.setState({ touching: true, sequence: [index] });
+    console.log('DB click ', index);
   };
 
   handleTouchEnd = event => {
     const index = event.target.dataset.index;
 
     this.setState({ touching: false });
-    // console.log('End ', index);
+    console.log('End ', index);
     this.identifySequence();
   };
   handleDragEnd = event => {
     const index = event.target.dataset.index;
 
     this.setState({ touching: false });
-    // console.log('Drag End ', index);
+    console.log('Drag End ', index);
     this.identifySequence();
   };
 
   handleDragEnter = event => {
     const index = event.target.dataset.index;
 
+    console.log('handleDragEnter ', index);
+
     if (this.state.touching) {
       this.setState({
         touching: true,
         sequence: this.state.sequence.concat(index)
       });
-
-      // console.log('enter ', index);
     }
   };
 
@@ -116,32 +139,75 @@ class Symbol extends Component {
       return mapedLetterToEncoding[symbol] === encoding;
     })[0];
     console.log('Symbol:', originalSymbol);
+
+    this.props.updateSymbol(originalSymbol);
+  };
+
+  isTouched = (index, sequence) => {
+    return this.props.interactive && sequence.includes(index.toString());
   };
 
   render() {
-    const { letter, size, interactive } = this.props;
+    const { letter, size, interactive, typedSymbol } = this.props;
 
     // Add a handler that will be passed to all the cells
-    const newProps = { ...this.props, handleDragEnter: this.handleDragEnter };
+    const newProps = {
+      ...this.props,
+      handleDragEnter: this.handleDragEnter,
+      onDragOver: this.handleDragEnter,
+      onMouseOver: this.handleDragEnter,
+      onTouchMove: this.handleDragEnter,
+      onPointerMove: this.handleDragEnter,
+      onPointerOver: this.handleDragEnter,
+      onDragEnter: this.handleDragEnter
+    };
+
+    const isTyped = typedSymbol && typedSymbol === letter;
 
     return (
       <table
+        className={isTyped ? 'typed-letter' : ''}
         onMouseDown={this.handleTouchStart}
         onMouseUp={this.handleTouchEnd}
         onDragEnd={this.handleDragEnd}
+        onDoubleClick={this.handleDoubleClick}
       >
         <tbody>
           <tr>
-            <Cell index="0" {...newProps} />
-            <Cell index="1" {...newProps} />
+            <Cell
+              index="0"
+              {...newProps}
+              touched={this.isTouched(0, this.state.sequence)}
+            />
+            <Cell
+              index="1"
+              {...newProps}
+              touched={this.isTouched(1, this.state.sequence)}
+            />
           </tr>
           <tr>
-            <Cell index="2" {...newProps} />
-            <Cell index="3" {...newProps} />
+            <Cell
+              index="2"
+              {...newProps}
+              touched={this.isTouched(2, this.state.sequence)}
+            />
+            <Cell
+              index="3"
+              {...newProps}
+              touched={this.isTouched(3, this.state.sequence)}
+            />
           </tr>
           <tr>
-            <Cell index="4" {...newProps} />
-            <Cell index="5" {...newProps} />
+            <Cell
+              index="4"
+              {...newProps}
+              touched={this.isTouched(4, this.state.sequence)}
+            />
+            <Cell
+              index="5"
+              {...newProps}
+              touched={this.isTouched(5, this.state.sequence)}
+            />
           </tr>
         </tbody>
       </table>
