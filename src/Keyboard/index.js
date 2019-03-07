@@ -4,9 +4,9 @@ import Symbol from './../Symbol';
 export default class index extends Component {
   render() {
     return (
-      <div>
+      <div className="keyboard">
         Keyboard:
-        <Symbol size="70" />
+        <Symbol size="70" interactive />
       </div>
     );
   }

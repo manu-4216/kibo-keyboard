@@ -37,33 +37,113 @@ const mapedLetterToEncoding = {
   z: '101011'
 };
 
-const Cell = ({ index, letter = ' ', size = '5' }) => {
+const Cell = ({ index, letter = ' ', size = '5', handleDragEnter }) => {
   const isFilled = mapedLetterToEncoding[letter][+index] === '1';
   const cellStyle = {
     height: `${size}px`,
     width: `${size}px`
   };
-  return <td style={cellStyle} className={isFilled ? 'cell-filled' : ''} />;
+  return (
+    <td
+      onMouseEnter={handleDragEnter}
+      data-index={index}
+      style={cellStyle}
+      className={isFilled ? 'cell-filled' : ''}
+    />
+  );
 };
+
 class Symbol extends Component {
+  state = {
+    touching: false,
+    sequence: []
+  };
+  handleTouchStart = event => {
+    const index = event.target.dataset.index;
+
+    this.setState({ touching: true, sequence: [index] });
+    // console.log('Start ', index);
+  };
+
+  handleTouchEnd = event => {
+    const index = event.target.dataset.index;
+
+    this.setState({ touching: false });
+    // console.log('End ', index);
+    this.identifySequence();
+  };
+  handleDragEnd = event => {
+    const index = event.target.dataset.index;
+
+    this.setState({ touching: false });
+    // console.log('Drag End ', index);
+    this.identifySequence();
+  };
+
+  handleDragEnter = event => {
+    const index = event.target.dataset.index;
+
+    if (this.state.touching) {
+      this.setState({
+        touching: true,
+        sequence: this.state.sequence.concat(index)
+      });
+
+      // console.log('enter ', index);
+    }
+  };
+
+  // Go from a sequence such as [1, 3, 2] to
+  identifySequence = () => {
+    // Don't do anything for the non-interactive symbols
+    if (!this.props.interactive) {
+      return;
+    }
+
+    let encoding = '';
+    let originalSymbol;
+
+    for (let i = 0; i < 6; i++) {
+      if (this.state.sequence.includes(i.toString())) {
+        encoding += '1';
+      } else {
+        encoding += '0';
+      }
+    }
+    // console.log('encoding ', encoding);
+
+    originalSymbol = Object.keys(mapedLetterToEncoding).filter(symbol => {
+      return mapedLetterToEncoding[symbol] === encoding;
+    })[0];
+    console.log('Symbol:', originalSymbol);
+  };
+
   render() {
-    const { letter, size } = this.props;
-    console.log(letter);
+    const { letter, size, interactive } = this.props;
+
+    // Add a handler that will be passed to all the cells
+    const newProps = { ...this.props, handleDragEnter: this.handleDragEnter };
 
     return (
-      <table>
-        <tr>
-          <Cell index="0" {...this.props} />
-          <Cell index="1" {...this.props} />
-        </tr>
-        <tr>
-          <Cell index="2" {...this.props} />
-          <Cell index="3" {...this.props} />
-        </tr>
-        <tr>
-          <Cell index="4" {...this.props} />
-          <Cell index="5" {...this.props} />
-        </tr>
+      <table
+        onMouseDown={this.handleTouchStart}
+        onMouseUp={this.handleTouchEnd}
+        onDragEnd={this.handleDragEnd}
+      >
+        <tbody>
+          <tr>
+            <Cell index="0" {...newProps} />
+            <Cell index="1" {...newProps} />
+          </tr>
+          <tr>
+            <Cell index="2" {...newProps} />
+            <Cell index="3" {...newProps} />
+          </tr>
+          <tr>
+            <Cell index="4" {...newProps} />
+            <Cell index="5" {...newProps} />
+          </tr>
+        </tbody>
       </table>
     );
   }

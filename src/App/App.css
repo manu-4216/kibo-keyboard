@@ -50,3 +50,7 @@ tr {
 .cell-filled {
   background: white;
 }
+
+.keyboard {
+  margin-top: 1em;
+}
