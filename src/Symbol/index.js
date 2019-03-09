@@ -37,13 +37,7 @@ const mapedLetterToEncoding = {
   z: '101011'
 };
 
-const Cell = ({
-  index,
-  letter = ' ',
-  size = '5',
-  handleDragEnter,
-  touched
-}) => {
+const Cell = ({ index, letter = ' ', size = '5', handleMove, touched }) => {
   const isFilled = mapedLetterToEncoding[letter][+index] === '1';
   const cellStyle = {
     height: `${size}px`,
@@ -61,7 +55,14 @@ const Cell = ({
   }
   return (
     <td
-      onMouseEnter={handleDragEnter}
+      onMouseEnter={handleMove}
+      onMouseMove={handleMove}
+      onDragOver={handleMove}
+      onMouseOver={handleMove}
+      onTouchMove={handleMove}
+      onPointerMove={handleMove}
+      onPointerOver={handleMove}
+      onDragEnter={handleMove}
       data-index={index}
       style={cellStyle}
       className={className}
@@ -70,50 +71,85 @@ const Cell = ({
 };
 
 class Symbol extends Component {
-  state = {
-    touching: false,
-    sequence: []
-  };
-  handleTouchStart = event => {
+  constructor(props) {
+    super(props);
+
+    this.keyboardRef = React.createRef();
+
+    this.state = {
+      touching: false,
+      sequence: [],
+      previousIndex: null
+    };
+  }
+
+  handleStart = event => {
     const index = event.target.dataset.index;
 
-    this.setState({ touching: true, sequence: [index] });
-    console.log('Start ', index);
+    this.setState({
+      touching: true,
+      sequence: [+index],
+      previousIndex: +index
+    });
+    // console.log('Start ', index);
   };
 
   handleDoubleClick = event => {
     const index = event.target.dataset.index;
 
     // this.setState({ touching: true, sequence: [index] });
-    console.log('DB click ', index);
+    // console.log('DB click ', index);
   };
 
-  handleTouchEnd = event => {
+  handleEnd = event => {
     const index = event.target.dataset.index;
 
-    this.setState({ touching: false });
-    console.log('End ', index);
-    this.identifySequence();
-  };
-  handleDragEnd = event => {
-    const index = event.target.dataset.index;
-
-    this.setState({ touching: false });
-    console.log('Drag End ', index);
+    // Needed to avoid having the end event triggered twice to touch devices
+    if (event.type === 'touchend') {
+      event.preventDefault();
+    }
+    // console.log('End ', index + ' ' + event.type);
+    this.setState({ touching: false, previousIndex: null });
     this.identifySequence();
   };
 
-  handleDragEnter = event => {
-    const index = event.target.dataset.index;
+  handleMove = event => {
+    let x = event.pageX;
+    let y = event.pageY;
 
-    console.log('handleDragEnter ', index);
+    if (event.type === 'touchmove') {
+      x = event.touches[0].pageX;
+      y = event.touches[0].pageY;
+    }
 
-    if (this.state.touching) {
+    const index = this.getCellIndex(x, y);
+
+    console.log(event.type + ' ' + index + ' ' + this.state.previousIndex);
+
+    // debugger;
+
+    if (this.state.touching && this.state.previousIndex !== index) {
+      console.log('new SEQ:' + this.state.sequence + ' + ' + index);
       this.setState({
-        touching: true,
-        sequence: this.state.sequence.concat(index)
+        sequence: this.state.sequence.concat(index),
+        previousIndex: +index
       });
     }
+  };
+
+  // get the cell index from the pageX and pageY
+  getCellIndex = (x, y) => {
+    const keyboardOrigin = this.keyboardRef.current.getBoundingClientRect();
+    const cellSize = +this.props.size;
+    let dx, dy, cellXIndex, cellYIndex;
+
+    dx = x - keyboardOrigin.left; //
+    dy = y - keyboardOrigin.top; //
+
+    cellXIndex = Math.floor(dx / cellSize); //floor
+    cellYIndex = Math.floor(dy / cellSize); //floor
+
+    return 2 * cellYIndex + cellXIndex;
   };
 
   // Go from a sequence such as [1, 3, 2] to
@@ -127,7 +163,7 @@ class Symbol extends Component {
     let originalSymbol;
 
     for (let i = 0; i < 6; i++) {
-      if (this.state.sequence.includes(i.toString())) {
+      if (this.state.sequence.includes(i)) {
         encoding += '1';
       } else {
         encoding += '0';
@@ -138,13 +174,13 @@ class Symbol extends Component {
     originalSymbol = Object.keys(mapedLetterToEncoding).filter(symbol => {
       return mapedLetterToEncoding[symbol] === encoding;
     })[0];
-    console.log('Symbol:', originalSymbol);
+    // console.log('Symbol:', originalSymbol);
 
     this.props.updateSymbol(originalSymbol);
   };
 
   isTouched = (index, sequence) => {
-    return this.props.interactive && sequence.includes(index.toString());
+    return this.props.interactive && sequence.includes(index);
   };
 
   render() {
@@ -153,13 +189,7 @@ class Symbol extends Component {
     // Add a handler that will be passed to all the cells
     const newProps = {
       ...this.props,
-      handleDragEnter: this.handleDragEnter,
-      onDragOver: this.handleDragEnter,
-      onMouseOver: this.handleDragEnter,
-      onTouchMove: this.handleDragEnter,
-      onPointerMove: this.handleDragEnter,
-      onPointerOver: this.handleDragEnter,
-      onDragEnter: this.handleDragEnter
+      handleMove: this.handleMove
     };
 
     const isTyped = typedSymbol && typedSymbol === letter;
@@ -167,10 +197,13 @@ class Symbol extends Component {
     return (
       <table
         className={isTyped ? 'typed-letter' : ''}
-        onMouseDown={this.handleTouchStart}
-        onMouseUp={this.handleTouchEnd}
-        onDragEnd={this.handleDragEnd}
+        onMouseDown={this.handleStart}
+        onTouchStart={this.handleStart}
+        onTouchEnd={this.handleEnd}
+        onDragEnd={this.handleEnd}
+        onMouseUp={this.handleEnd}
         onDoubleClick={this.handleDoubleClick}
+        ref={this.keyboardRef}
       >
         <tbody>
           <tr>

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 export default class Button extends Component {
   render() {
-    return <button>{this.props.children}</button>;
+    const { children, ...rest } = this.props;
+
+    return <button {...rest}>{children}</button>;
   }
 }

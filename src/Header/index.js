@@ -2,7 +2,7 @@ import React from 'react';
 import Symbol from './../Symbol';
 
 const Alphabet = ({ letters, typedSymbol }) => (
-  <ul>
+  <ul className="alphabet">
     {letters.map(letter => (
       <li key={letter} className="letter-pair">
         <span className="letter">{letter}</span>
@@ -45,7 +45,7 @@ const letters = [
 
 const Header = ({ typedSymbol }) => (
   <div>
-    Show help
+    Help:
     <Alphabet letters={letters} typedSymbol={typedSymbol} />
   </div>
 );

@@ -1,3 +1,13 @@
+body, html {
+  overflow: visible;
+  width: 100vw;
+}
+
+body {
+  position: fixed;
+  overscroll-behavior-y: none;
+}
+
 .App {
   text-align: center;
   background-color: #282c34;
@@ -21,7 +31,7 @@ ul {
 }
 .converted {
   position: absolute;
-  top: 1em;
+  top: 1.2em;
   left: 3px;
 }
 .letter {
@@ -65,4 +75,35 @@ tr {
 
 .keyboard {
   margin-top: 1em;
+}
+
+.alphabet {
+  width: 96vw;
+  overflow-x: scroll;
+  height: 3.2em;
+  border: 1px solid white;
+  padding: 0;
+}
+
+.bottom-controls {
+  margin: 10px;
+}
+.bottom-controls button{
+  margin: 5px;
+  padding:5px;
+  background:#d8d8d8;
+  border: 1px solid black;
+}
+
+.bottom-controls button:first-of-type {
+  background:#c08181;
+}
+
+.unrecognized {
+  height: 1.5em;
+  font-size: 76%;
+}
+
+.unrecognized.hidden {
+  opacity: 0;
 }

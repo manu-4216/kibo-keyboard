@@ -8,13 +8,21 @@ class App extends Component {
   state = { typedSymbol: null, text: '' };
 
   updateSymbol = typedSymbol => {
+    if (typedSymbol === 'DELETE') {
+      this.setState({
+        typedSymbol: null,
+        text: this.state.text.substring(0, this.state.text.length - 1)
+      });
+      return;
+    }
+
     this.setState({
       typedSymbol
     });
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.text === prevState.text) {
+    if (this.state.text === prevState.text && this.state.typedSymbol) {
       this.setState(({ text, typedSymbol }) => {
         return { text: text + typedSymbol };
       });
@@ -32,7 +40,7 @@ class App extends Component {
         />
         <div>Text: {this.state.text}</div>
 
-        <Footer />
+        <Footer updateSymbol={this.updateSymbol} />
       </div>
     );
   }
