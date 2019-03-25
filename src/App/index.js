@@ -38,7 +38,8 @@ class App extends Component {
           typedSymbol={this.state.typedSymbol}
           updateSymbol={this.updateSymbol}
         />
-        <div>Text: {this.state.text}</div>
+        <div>Text:</div>
+        <div>{this.state.text}</div>
 
         <Footer updateSymbol={this.updateSymbol} />
       </div>

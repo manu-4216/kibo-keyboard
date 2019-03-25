@@ -124,12 +124,12 @@ class Symbol extends Component {
 
     const index = this.getCellIndex(x, y);
 
-    console.log(event.type + ' ' + index + ' ' + this.state.previousIndex);
+    // console.log(event.type + ' ' + index + ' ' + this.state.previousIndex);
 
     // debugger;
 
     if (this.state.touching && this.state.previousIndex !== index) {
-      console.log('new SEQ:' + this.state.sequence + ' + ' + index);
+      // console.log('new SEQ:' + this.state.sequence + ' + ' + index);
       this.setState({
         sequence: this.state.sequence.concat(index),
         previousIndex: +index

@@ -44,8 +44,7 @@ const letters = [
 ];
 
 const Header = ({ typedSymbol }) => (
-  <div>
-    Help:
+  <div className="Header">
     <Alphabet letters={letters} typedSymbol={typedSymbol} />
   </div>
 );

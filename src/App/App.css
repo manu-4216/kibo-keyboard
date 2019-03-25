@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
   overflow: visible;
   width: 100vw;
 }
@@ -6,19 +7,23 @@ body, html {
 body {
   position: fixed;
   overscroll-behavior-y: none;
+  user-select: none;
 }
 
 .App {
   text-align: center;
   background-color: #282c34;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
   font-family: 'Courier New', Courier, monospace;
+}
+
+.Header {
+  margin-top: 20px;
 }
 
 ul {
@@ -29,11 +34,7 @@ ul {
 .letter-pair {
   position: relative;
 }
-.converted {
-  position: absolute;
-  top: 1.2em;
-  left: 3px;
-}
+
 .letter {
   padding: 0 5px;
 }
@@ -50,7 +51,7 @@ table {
 }
 
 .typed-letter .cell-filled {
-  background: #e2b6b6;
+  background: #d6bbbb;
 }
 td {
   border: 1px solid #a0a0a0;
@@ -70,7 +71,7 @@ tr {
 }
 
 .cell-touched {
-  background: #e2b6b6;
+  background: #d6bbbb;
 }
 
 .keyboard {
@@ -78,25 +79,46 @@ tr {
 }
 
 .alphabet {
-  width: 96vw;
-  overflow-x: scroll;
-  height: 3.2em;
-  border: 1px solid white;
-  padding: 0;
+  overflow-x: auto;
+  border: 1px solid #ffffff47;
+  padding: 5px 5px 10px;
 }
 
-.bottom-controls {
-  margin: 10px;
+@media only screen and (max-width: 750px) {
+  .alphabet {
+    width: 96vw;
+  }
 }
-.bottom-controls button{
+
+.main-area {
+  display: flex;
+}
+
+.main-area button {
+  padding: 0 3px;
+  background: none;
+  color: white;
+  margin: 0 10px;
+  border-radius: 5px;
+  outline: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.main-area button:first-of-type {
+  color: #ec7a7a;
+}
+.main-area button:last-of-type {
+}
+
+.bottom-controls button {
   margin: 5px;
-  padding:5px;
-  background:#d8d8d8;
+  padding: 5px;
+  background: #d8d8d8;
   border: 1px solid black;
 }
 
 .bottom-controls button:first-of-type {
-  background:#c08181;
+  background: #c08181;
 }
 
 .unrecognized {
