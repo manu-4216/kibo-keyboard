@@ -83,6 +83,16 @@ class Symbol extends Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    if (!this.props.interactive) {
+      return;
+    }
+
+    if (!prevProps.needsSequenceReset && this.props.needsSequenceReset) {
+      this.setState({ sequence: [] });
+    }
+  }
+
   handleStart = event => {
     const index = event.target.dataset.index;
 
@@ -91,24 +101,16 @@ class Symbol extends Component {
       sequence: [+index],
       previousIndex: +index
     });
-    // console.log('Start ', index);
   };
 
-  handleDoubleClick = event => {
-    const index = event.target.dataset.index;
-
-    // this.setState({ touching: true, sequence: [index] });
-    // console.log('DB click ', index);
-  };
+  handleDoubleClick = event => {};
 
   handleEnd = event => {
-    const index = event.target.dataset.index;
-
     // Needed to avoid having the end event triggered twice to touch devices
     if (event.type === 'touchend') {
       event.preventDefault();
     }
-    // console.log('End ', index + ' ' + event.type);
+
     this.setState({ touching: false, previousIndex: null });
     this.identifySequence();
   };
@@ -124,12 +126,7 @@ class Symbol extends Component {
 
     const index = this.getCellIndex(x, y);
 
-    // console.log(event.type + ' ' + index + ' ' + this.state.previousIndex);
-
-    // debugger;
-
     if (this.state.touching && this.state.previousIndex !== index) {
-      // console.log('new SEQ:' + this.state.sequence + ' + ' + index);
       this.setState({
         sequence: this.state.sequence.concat(index),
         previousIndex: +index
@@ -143,11 +140,11 @@ class Symbol extends Component {
     const cellSize = +this.props.size;
     let dx, dy, cellXIndex, cellYIndex;
 
-    dx = x - keyboardOrigin.left; //
-    dy = y - keyboardOrigin.top; //
+    dx = x - keyboardOrigin.left;
+    dy = y - keyboardOrigin.top;
 
-    cellXIndex = Math.floor(dx / cellSize); //floor
-    cellYIndex = Math.floor(dy / cellSize); //floor
+    cellXIndex = Math.floor(dx / cellSize);
+    cellYIndex = Math.floor(dy / cellSize);
 
     return 2 * cellYIndex + cellXIndex;
   };
@@ -169,12 +166,10 @@ class Symbol extends Component {
         encoding += '0';
       }
     }
-    // console.log('encoding ', encoding);
 
     originalSymbol = Object.keys(mapedLetterToEncoding).filter(symbol => {
       return mapedLetterToEncoding[symbol] === encoding;
     })[0];
-    // console.log('Symbol:', originalSymbol);
 
     this.props.updateSymbol(originalSymbol);
   };
@@ -184,7 +179,7 @@ class Symbol extends Component {
   };
 
   render() {
-    const { letter, size, interactive, typedSymbol } = this.props;
+    const { letter, typedSymbol } = this.props;
 
     // Add a handler that will be passed to all the cells
     const newProps = {

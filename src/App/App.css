@@ -75,7 +75,12 @@ tr {
 }
 
 .keyboard {
-  margin-top: 1em;
+  margin-top: 0.6em;
+}
+
+.description {
+  font-size: 50%;
+  margin-bottom: 1.3em;
 }
 
 .alphabet {
@@ -106,8 +111,16 @@ tr {
 
 .main-area button:first-of-type {
   color: #ec7a7a;
+  border: 1px solid #756262;
+}
+.main-area button:first-of-type:hover {
+  border-color: #b39292;
 }
 .main-area button:last-of-type {
+  border: 1px solid #656769;
+}
+.main-area button:last-of-type:hover {
+  border-color: #98a5b1;
 }
 
 .bottom-controls button {
@@ -128,4 +141,33 @@ tr {
 
 .unrecognized.hidden {
   opacity: 0;
+}
+
+.Text-Label {
+  color: #9e9e9e;
+  margin-bottom: 5px;
+}
+
+.Text {
+  width: 90vw;
+  text-align: left;
+  word-break: break-word;
+}
+.Text:after {
+  content: '_';
+  position: relative;
+}
+.Text-Blink:after {
+  animation: blink-animation 1.5s steps(5, start) infinite;
+}
+
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
 }

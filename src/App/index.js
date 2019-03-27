@@ -5,24 +5,32 @@ import Header from './../Header';
 import './App.css';
 
 class App extends Component {
-  state = { typedSymbol: null, text: '' };
+  state = { typedSymbol: null, text: '', needsSequenceReset: false };
 
   updateSymbol = typedSymbol => {
+    const getNeedsSequenceReset = symbol => ['\u00a0'].includes(symbol);
+
     if (typedSymbol === 'DELETE') {
       this.setState({
         typedSymbol: null,
-        text: this.state.text.substring(0, this.state.text.length - 1)
+        text: this.state.text.substring(0, this.state.text.length - 1),
+        needsSequenceReset: true
       });
       return;
     }
 
     this.setState({
-      typedSymbol
+      typedSymbol,
+      needsSequenceReset: getNeedsSequenceReset(typedSymbol)
     });
   };
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.text === prevState.text && this.state.typedSymbol) {
+      // Reinitialize the blink animation
+      document.querySelector('.Text').classList.remove('Text-Blink');
+      document.querySelector('.Text').classList.add('Text-Blink');
+
       this.setState(({ text, typedSymbol }) => {
         return { text: text + typedSymbol };
       });
@@ -37,9 +45,10 @@ class App extends Component {
         <Keyboard
           typedSymbol={this.state.typedSymbol}
           updateSymbol={this.updateSymbol}
+          needsSequenceReset={this.state.needsSequenceReset}
         />
-        <div>Text:</div>
-        <div>{this.state.text}</div>
+        <div className="Text-Label">Text:</div>
+        <div className="Text Text-Blink">{this.state.text}</div>
 
         <Footer updateSymbol={this.updateSymbol} />
       </div>

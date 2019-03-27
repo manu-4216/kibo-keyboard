@@ -7,19 +7,26 @@ export default class index extends Component {
     this.props.updateSymbol('DELETE');
   };
   handleSpace = () => {
-    this.props.updateSymbol(' ');
+    this.props.updateSymbol('\u00a0');
   };
 
   render() {
-    const { updateSymbol } = this.props;
-    const unknownSymbol = this.props.typedSymbol === undefined;
+    const { updateSymbol, typedSymbol, needsSequenceReset } = this.props;
+    const unknownSymbol = typedSymbol === undefined;
 
     return (
       <div className="keyboard">
-        Keyboard:
+        KIBO
+        <div className="description">The fastest touch-friendly keyboard</div>
         <div className="main-area">
           <Button onClick={this.handleDelete}>Delete</Button>
-          <Symbol size="70" interactive updateSymbol={updateSymbol} />
+          <Symbol
+            size="70"
+            interactive
+            updateSymbol={updateSymbol}
+            typedSymbol={typedSymbol}
+            needsSequenceReset={needsSequenceReset}
+          />
           <Button onClick={this.handleSpace}>Space</Button>
         </div>
         <div />
