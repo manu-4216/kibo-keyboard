@@ -37,12 +37,21 @@ const mapedLetterToEncoding = {
   z: '101011'
 };
 
-const Cell = ({ index, letter = ' ', size = '5', handleMove, touched }) => {
+const Cell = ({ index, letter = '\u00a0', size, handleMove, touched }) => {
+  let cellStyle = {};
+
+  if (letter === '\u00a0') {
+    letter = ' ';
+  }
+
   const isFilled = mapedLetterToEncoding[letter][+index] === '1';
-  const cellStyle = {
-    height: `${size}px`,
-    width: `${size}px`
-  };
+
+  if (size) {
+    cellStyle = {
+      height: `${size}px`,
+      width: `${size}px`
+    };
+  }
 
   let className = '';
 

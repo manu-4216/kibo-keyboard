@@ -36,7 +36,8 @@ ul {
 }
 
 .letter {
-  padding: 0 5px;
+  padding: 0 3px;
+  font-size: 70%;
 }
 
 table {
@@ -58,8 +59,8 @@ td {
   margin-bottom: -1px;
   margin-left: -1px;
   display: inline-block;
-  height: 5px;
-  width: 5px;
+  height: 2px;
+  width: 2px;
 }
 tr {
   line-height: 0;
@@ -87,6 +88,32 @@ tr {
   overflow-x: auto;
   border: 1px solid #ffffff47;
   padding: 5px 5px 10px;
+  min-height: 32px;
+}
+.Text-LettersList .alphabet {
+  width: 90vw;
+  text-align: left;
+  border: none;
+  flex-wrap: wrap;
+  margin: 0;
+}
+.Text-LettersList .alphabet .letter {
+  padding: 0 3px;
+}
+.Text-LettersList .alphabet .letter-pair.space {
+  visibility: hidden;
+  width: 5px;
+}
+.Text-LettersList .alphabet td {
+  height: 2px;
+  width: 2px;
+}
+
+.Text-LettersList .alphabet:after {
+  content: '_';
+}
+.Text-LettersList .alphabet.Text-Blink:after {
+  animation: blink-animation 1.5s steps(5, start) infinite;
 }
 
 @media only screen and (max-width: 750px) {

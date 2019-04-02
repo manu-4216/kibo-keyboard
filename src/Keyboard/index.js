@@ -7,7 +7,7 @@ export default class index extends Component {
     this.props.updateSymbol('DELETE');
   };
   handleSpace = () => {
-    this.props.updateSymbol('\u00a0');
+    this.props.updateSymbol(' ');
   };
 
   render() {

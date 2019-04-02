@@ -1,18 +1,5 @@
 import React from 'react';
-import Symbol from './../Symbol';
-
-const Alphabet = ({ letters, typedSymbol }) => (
-  <ul className="alphabet">
-    {letters.map(letter => (
-      <li key={letter} className="letter-pair">
-        <span className="letter">{letter}</span>
-        <span className="converted">
-          <Symbol letter={letter} typedSymbol={typedSymbol} />
-        </span>
-      </li>
-    ))}
-  </ul>
-);
+import LettersList from './../LettersList';
 
 const letters = [
   'a',
@@ -45,7 +32,7 @@ const letters = [
 
 const Header = ({ typedSymbol }) => (
   <div className="Header">
-    <Alphabet letters={letters} typedSymbol={typedSymbol} />
+    <LettersList letters={letters} typedSymbol={typedSymbol} />
   </div>
 );
 export default Header;
