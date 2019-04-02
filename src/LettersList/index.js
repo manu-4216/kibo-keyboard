@@ -15,7 +15,7 @@ const LettersList = ({ letters, typedSymbol }) => (
       <li key={index} className={getClasses(letter)}>
         <span className="letter">{letter}</span>
         <span className="converted">
-          <Symbol letter={letter} />
+          <Symbol letter={letter} typedSymbol={typedSymbol} />
         </span>
       </li>
     ))}
