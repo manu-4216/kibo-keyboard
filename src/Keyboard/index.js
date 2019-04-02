@@ -21,7 +21,7 @@ export default class index extends Component {
         <div className="main-area">
           <Button onClick={this.handleDelete}>Delete</Button>
           <Symbol
-            size="70"
+            size="65"
             interactive
             updateSymbol={updateSymbol}
             typedSymbol={typedSymbol}

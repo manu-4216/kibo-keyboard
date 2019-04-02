@@ -50,18 +50,17 @@ class App extends Component {
     return (
       <div className="App">
         <Header typedSymbol={this.state.typedSymbol} />
+        <div className="Text-Label">Text:</div>
+
+        <div className="Text-LettersList">
+          <LettersList letters={formatedText(this.state.text)} />
+        </div>
 
         <Keyboard
           typedSymbol={this.state.typedSymbol}
           updateSymbol={this.updateSymbol}
           needsSequenceReset={this.state.needsSequenceReset}
         />
-        <div className="Text-Label">Text:</div>
-
-        <div className="Text-LettersList">
-          <LettersList letters={formatedText(this.state.text)} />
-        </div>
-        {/* <div className="Text Text-Blink">{this.state.text}</div> */}
 
         <Footer updateSymbol={this.updateSymbol} />
       </div>
