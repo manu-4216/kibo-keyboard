@@ -36,7 +36,7 @@ ul {
 }
 
 .letter {
-  padding: 0 3px;
+  padding: 0 4px;
   font-size: 70%;
 }
 
@@ -59,8 +59,8 @@ td {
   margin-bottom: -1px;
   margin-left: -1px;
   display: inline-block;
-  height: 2px;
-  width: 2px;
+  height: 3px;
+  width: 3px;
 }
 tr {
   line-height: 0;
@@ -90,6 +90,7 @@ tr {
   border: 1px solid #ffffff47;
   padding: 5px 5px 10px;
   min-height: 32px;
+  margin: 25px 0 5px;
 }
 .Text-LettersList .alphabet {
   width: 90vw;
@@ -103,7 +104,10 @@ tr {
 }
 .Text-LettersList .alphabet .letter-pair.space {
   visibility: hidden;
-  width: 5px;
+  width: 7px;
+}
+.Text-LettersList.hide-letters .alphabet .letter {
+  opacity: 0;
 }
 .Text-LettersList .alphabet td {
   height: 2px;
@@ -112,6 +116,8 @@ tr {
 
 .Text-LettersList .alphabet:after {
   content: '_';
+  padding-top: 20px;
+  padding-left: 2px;
 }
 .Text-LettersList .alphabet.Text-Blink:after {
   animation: blink-animation 1.5s steps(5, start) infinite;
@@ -127,7 +133,7 @@ tr {
   display: flex;
 }
 
-.main-area button {
+button {
   padding: 0 3px;
   background: none;
   color: white;
@@ -135,6 +141,14 @@ tr {
   border-radius: 5px;
   outline: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  border: 1px solid #656769;
+  cursor: pointer;
+}
+
+.Header button {
+  padding: 3px 7px;
+  margin-bottom: 10px;
+  float: right;
 }
 
 .main-area button:first-of-type {

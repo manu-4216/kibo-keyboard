@@ -1,5 +1,6 @@
 import React from 'react';
 import LettersList from './../LettersList';
+import Button from '../Button';
 
 const letters = [
   'a',
@@ -30,9 +31,16 @@ const letters = [
   'z'
 ];
 
+const handleToggleHints = () => {
+  const textAreaElem = document.querySelector('.Text-LettersList');
+
+  textAreaElem.classList.toggle('hide-letters');
+};
+
 const Header = ({ typedSymbol }) => (
   <div className="Header">
     <LettersList letters={letters} typedSymbol={typedSymbol} />
+    <Button onClick={handleToggleHints}>Toggle letters</Button>
   </div>
 );
 export default Header;
